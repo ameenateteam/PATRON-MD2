@@ -49,7 +49,7 @@ cmd({
 
         // Copy updated files, preserving config.js and app.json
         await reply("🔄 Replacing files...");
-        const sourcePath = path.join(extractPath, "PATRON-MD-main");
+        const sourcePath = path.join(extractPath, "PATRON-MD2-main");
         const destinationPath = path.join(__dirname, '..');
         copyFolderSync(sourcePath, destinationPath);
 
@@ -70,6 +70,10 @@ cmd({
 
 // Helper function to copy directories while preserving config.js and app.json
 function copyFolderSync(source, target) {
+    if (!fs.existsSync(source)) {
+        console.error('Update error: Source directory does not exist:', source);
+        return; // Prevent crashing if source folder is missing
+    }
     if (!fs.existsSync(target)) {
         fs.mkdirSync(target, { recursive: true });
     }
