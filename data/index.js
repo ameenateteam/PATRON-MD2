@@ -12,9 +12,8 @@ const {
     getGroupMetadata,
     saveMessageCount,
     getInactiveGroupMembers,
-    getGroupMembersMessageCount,
-    saveMessage,
-    getMessage } = require('./messageStore');
+    getGroupMembersMessageCount, } = require('../messageStore');
+const { saveMessage, getMessage } = require('../messageStore');
 
 module.exports = {
     AntiDelDB,
