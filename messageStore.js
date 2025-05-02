@@ -11,23 +11,33 @@ function saveDB(db) {
     fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
 }
 
+// Normalize the key to only relevant fields
+function normalizeKey(key) {
+    if (!key) return {};
+    return {
+        remoteJid: key.remoteJid,
+        id: key.id,
+        fromMe: !!key.fromMe,
+        participant: key.participant || undefined
+    };
+}
+
 function saveMessage(key, message) {
     const db = loadDB();
-    const stringKey = JSON.stringify(key);
-    db[stringKey] = message;
+    const normKey = normalizeKey(key);
+    db[JSON.stringify(normKey)] = message;
     saveDB(db);
-    // Log key and message type for debugging
-    console.log('Saved message with key:', key, 'type:', message && message.message ? Object.keys(message.message)[0] : 'unknown');
+    console.log('Saved message with normalized key:', normKey, 'type:', message && message.message ? Object.keys(message.message)[0] : 'unknown');
 }
 
 function getMessage(key) {
     const db = loadDB();
-    const stringKey = JSON.stringify(key);
-    const result = db[stringKey];
+    const normKey = normalizeKey(key);
+    const result = db[JSON.stringify(normKey)];
     if (!result) {
         // Compare all keys for debugging
         const allKeys = Object.keys(db).map(k => JSON.parse(k));
-        console.log('Message not found for key:', key);
+        console.log('Message not found for normalized key:', normKey);
         console.log('Available keys:', allKeys);
     }
     return result;
