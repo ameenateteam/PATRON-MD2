@@ -42,29 +42,6 @@ const getContacts = async () => {
   }
 };
 
-const saveMessage = async (message) => {
-  const jid = message.key.remoteJid;
-  const id = message.key.id;
-  if (!id || !jid || !message) return;
-  await saveContact(message.sender, message.pushName);
-  const messages = await readJSON('message.json');
-  const index = messages.findIndex((msg) => msg.id === id && msg.jid === jid);
-  const timestamp = message.messageTimestamp ? message.messageTimestamp * 1000 : Date.now();
-  if (index > -1) {
-    messages[index].message = message;
-    messages[index].timestamp = timestamp;
-  } else {
-    messages.push({ id, jid, message, timestamp });
-  }
-  await writeJSON('message.json', messages);
-};
-
-const loadMessage = async (id) => {
-  if (!id) return null;
-  const messages = await readJSON('message.json');
-  return messages.find((msg) => msg.id === id) || null;
-};
-
 const getName = async (jid) => {
   const contacts = await readJSON('contact.json');
   const contact = contacts.find((contact) => contact.jid === jid);
@@ -122,6 +99,7 @@ const getGroupMetadata = async (jid) => {
   const participants = await readJSON(`${jid}_participants.json`);
   return { ...metadata, participants };
 };
+
 const saveMessageCount = async (message) => {
   if (!message) return;
   const jid = message.key.remoteJid;
@@ -197,22 +175,23 @@ const getChatSummary = async () => {
   );
 };
 
-const saveMessageV1 = saveMessage;
-const saveMessageV2 = (message) => {
-  return Promise.all([saveMessageV1(message), saveMessageCount(message)]);
-};
+// DEPRECATED: Use messageStore.js for all message saving and loading
+// const saveMessage = async (message) => { ... }
+// const loadMessage = async (id) => { ... }
+
+const { saveMessage, getMessage } = require('../messageStore');
 
 module.exports = {
-    saveContact,
-    loadMessage,
-    getName,
-    getChatSummary,
-    saveGroupMetadata,
-    getGroupMetadata,
-    saveMessageCount,
-    getInactiveGroupMembers,
-    getGroupMembersMessageCount,
-    saveMessage: saveMessageV2,
+  saveContact,
+  getName,
+  getChatSummary,
+  saveGroupMetadata,
+  getGroupMetadata,
+  saveMessageCount,
+  getInactiveGroupMembers,
+  getGroupMembersMessageCount,
+  saveMessage,
+  getMessage,
 };
 
 // codes by PatronTechX 

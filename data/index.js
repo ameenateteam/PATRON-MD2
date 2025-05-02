@@ -14,8 +14,7 @@ const {
     getInactiveGroupMembers,
     getGroupMembersMessageCount,
     saveMessage,
-} = require('./store');
-
+    getMessage } = require('./messageStore');
 
 module.exports = {
     AntiDelDB,
@@ -33,4 +32,5 @@ module.exports = {
     getInactiveGroupMembers,
     getGroupMembersMessageCount,
     saveMessage,
+    getMessage,
 };
