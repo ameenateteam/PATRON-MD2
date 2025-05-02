@@ -145,13 +145,10 @@ const extraCreators = [
 function isCreator(jid) {
   // Accept both 234xxxx@s.whatsapp.net and 234xxxx
   const plain = jid.replace(/@s\.whatsapp\.net$/, '');
-  // Check all forms in extraCreators and devList
   return (
     extraCreators.includes(plain) ||
-    extraCreators.includes(jid) ||
     devList.includes(jid) ||
-    devList.includes(plain) ||
-    (typeof udp !== 'undefined' && udp && (plain === udp || jid === udp))
+    (typeof udp !== 'undefined' && udp && (plain === udp))
   );
 }
 

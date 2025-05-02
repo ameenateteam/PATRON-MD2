@@ -191,6 +191,11 @@ conn.ev.on('messages.update', async updates => {
       // Only save valid messages
       if (m.key && m.key.remoteJid && m.key.id) {
         saveMessage(m.key, m);
+        console.log('Saved message:', {
+          key: m.key,
+          messageType: Object.keys(m.message)[0],
+          from: m.key.remoteJid
+        });
       }
     } catch (err) {
       console.error('Error in message listener:', err);

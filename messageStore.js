@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const DB_FILE = path.join(__dirname, 'lib', 'messages.json');
+const DB_FILE = path.join(__dirname, 'messages.json');
 
 function loadDB() {
     if (!fs.existsSync(DB_FILE)) return {};
@@ -28,11 +28,13 @@ function saveMessage(key, message) {
 
     // Prevent saving if remoteJid or id is missing
     if (!normKey.remoteJid || !normKey.id) {
+        console.warn('Not saving message with invalid key:', normKey, 'type:', message && message.message ? Object.keys(message.message)[0] : 'unknown');
         return;
     }
 
     db[JSON.stringify(normKey)] = message;
     saveDB(db);
+    console.log('Saved message with normalized key:', normKey, 'type:', message && message.message ? Object.keys(message.message)[0] : 'unknown');
 }
 
 function getMessage(key) {
@@ -56,6 +58,7 @@ function getMessage(key) {
         });
         if (fallbackKey) {
             result = db[fallbackKey];
+            console.log('Fuzzy match found for key:', normKey, 'using stored key:', fallbackKey);
         } else {
             // Compare all keys for debugging
             const allParsedKeys = allKeys.map(k => JSON.parse(k));
