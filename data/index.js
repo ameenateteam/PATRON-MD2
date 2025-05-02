@@ -3,6 +3,11 @@ const { AntiDelDB,
     setAnti,
     getAnti,
     getAllAntiDeleteSettings, } = require('./antidel');
+
+// Only import saveMessage and getMessage from messageStore.js
+const { saveMessage, getMessage } = require('../messageStore');
+
+// Import all other functions from store.js
 const {
     saveContact,
     loadMessage,
@@ -12,8 +17,8 @@ const {
     getGroupMetadata,
     saveMessageCount,
     getInactiveGroupMembers,
-    getGroupMembersMessageCount, } = require('../messageStore');
-const { saveMessage, getMessage } = require('../messageStore');
+    getGroupMembersMessageCount
+} = require('./store');
 
 module.exports = {
     AntiDelDB,

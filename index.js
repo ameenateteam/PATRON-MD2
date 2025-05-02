@@ -188,13 +188,15 @@ conn.ev.on('messages.update', async updates => {
     try {
       const m = messages[0];
       if (!m?.message) return;
-      // Save every incoming message for message store
-      saveMessage(m.key, m);
-      console.log('Saved message:', {
-        key: m.key,
-        messageType: Object.keys(m.message)[0],
-        from: m.key.remoteJid
-      });
+      // Only save valid messages
+      if (m.key && m.key.remoteJid && m.key.id) {
+        saveMessage(m.key, m);
+        console.log('Saved message:', {
+          key: m.key,
+          messageType: Object.keys(m.message)[0],
+          from: m.key.remoteJid
+        });
+      }
     } catch (err) {
       console.error('Error in message listener:', err);
     }
@@ -520,7 +522,7 @@ if (events && events.commands) {
 // Ensure the bot responds to sudo users in private mode
 conn.ev.on('messages.upsert', async (mek) => {
     const m = mek.messages[0];
-    if (!m.message) return;
+    if (!m?.message) return;
 
     const from = m.key.remoteJid;
     const isGroup = from.endsWith("@g.us");
