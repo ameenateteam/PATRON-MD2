@@ -136,11 +136,13 @@ function registerGroupMessages(conn) {
         }
       }
       else if (update.action === "promote" || update.action === "demote") {
+        // Debug log for troubleshooting
+        console.log('[DEBUG] group-participants.update event:', JSON.stringify(update, null, 2));
         for (const participant of update.participants) {
-          const actor = update.actor || participant; // Fallback to self if no actor
+          // Baileys uses update.author as the actor (who performed the action), participant as the target
+          const actor = update.author || update.actor || participant;
           const action = update.action === "promote" ? "promoted" : "demoted";
           const emoji = update.action === "promote" ? "🎉" : "🚫";
-          
           await conn.sendMessage(groupId, {
             text: `${emoji} *@${actor.split('@')[0]}* ${action} *@${participant.split('@')[0]}*`,
             mentions: [actor, participant]
