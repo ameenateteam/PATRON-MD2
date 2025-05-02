@@ -25,6 +25,13 @@ function normalizeKey(key) {
 function saveMessage(key, message) {
     const db = loadDB();
     const normKey = normalizeKey(key);
+
+    // Prevent saving if remoteJid or id is missing
+    if (!normKey.remoteJid || !normKey.id) {
+        console.warn('Not saving message with invalid key:', normKey, 'type:', message && message.message ? Object.keys(message.message)[0] : 'unknown');
+        return;
+    }
+
     db[JSON.stringify(normKey)] = message;
     saveDB(db);
     console.log('Saved message with normalized key:', normKey, 'type:', message && message.message ? Object.keys(message.message)[0] : 'unknown');
