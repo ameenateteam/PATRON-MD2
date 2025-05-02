@@ -165,13 +165,13 @@ const getChatSummary = async () => {
         jid,
         name: chatName,
         messageCount,
-        lastMessageTimestamp: lastMessage ? lastMessage.timestamp : null,
+        Timestamp: lastMessage ? lastMessage.timestamp : null,
       };
     })
   );
 
   return summaries.sort(
-    (a, b) => new Date(b.lastMessageTimestamp) - new Date(a.lastMessageTimestamp)
+    (a, b) => new Date(b.Timestamp) - new Date(a.Timestamp)
   );
 };
 

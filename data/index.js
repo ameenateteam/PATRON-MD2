@@ -10,7 +10,7 @@ const { saveMessage, getMessage } = require('../messageStore');
 // Import all other functions from store.js
 const {
     saveContact,
-    loadMessage,
+
     getName,
     getChatSummary,
     saveGroupMetadata,
@@ -27,7 +27,7 @@ module.exports = {
     getAnti,
     getAllAntiDeleteSettings,
     saveContact,
-    loadMessage,
+
     getName,
     getChatSummary,
     saveGroupMetadata,

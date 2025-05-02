@@ -187,13 +187,21 @@ conn.ev.on('messages.update', async updates => {
   conn.ev.on("messages.upsert", async ({ messages }) => {
     try {
       const m = messages[0];
-      if (!m?.message) return;
+      let message = m?.message;
+      if (!message && m?.key) {
+        // Try to fetch from local store
+        message = await getMessage(m.key);
+        if (!message) {
+          console.warn('[WARN] Skipped message with missing content and not found in store:', m.key);
+          return;
+        }
+      }
       // Only save valid messages
       if (m.key && m.key.remoteJid && m.key.id) {
-        saveMessage(m.key, m);
+        saveMessage(m.key, { ...m, message });
         console.log('Saved message:', {
           key: m.key,
-          messageType: Object.keys(m.message)[0],
+          messageType: Object.keys(message)[0],
           from: m.key.remoteJid
         });
       }
