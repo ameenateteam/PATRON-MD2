@@ -7,6 +7,8 @@ let settings = loadSettings();
 let welcomeSettings = settings.welcome || {};
 let goodbyeSettings = settings.goodbye || {};
 
+const { getPDMStatus } = require('./pdmCommands'); // Import getPDMStatus
+
 const defaultWelcomeMessage = "Welcome {user} to {group}! We're glad to have you here.";
 const defaultGoodbyeMessage = "Goodbye {user}. We'll miss you in {group}.";
 
@@ -136,16 +138,18 @@ function registerGroupMessages(conn) {
         }
       }
       else if (update.action === "promote" || update.action === "demote") {
-
-        for (const participant of update.participants) {
-          // Baileys uses update.author as the actor (who performed the action), participant as the target
-          const actor = update.author || update.actor || participant;
-          const action = update.action === "promote" ? "promoted" : "demoted";
-          const emoji = update.action === "promote" ? "🎉" : "🚫";
-          await conn.sendMessage(groupId, {
-            text: `${emoji} *@${actor.split('@')[0]}* ${action} *@${participant.split('@')[0]}*`,
-            mentions: [actor, participant]
-          });
+        // Only send promote/demote messages if PDM is enabled for this group
+        if (getPDMStatus && getPDMStatus(groupId)) {
+          for (const participant of update.participants) {
+            // Baileys uses update.author as the actor (who performed the action), participant as the target
+            const actor = update.author || update.actor || participant;
+            const action = update.action === "promote" ? "promoted" : "demoted";
+            const emoji = update.action === "promote" ? "🎉" : "🚫";
+            await conn.sendMessage(groupId, {
+              text: `${emoji} *@${actor.split('@')[0]}* ${action} *@${participant.split('@')[0]}*`,
+              mentions: [actor, participant]
+            });
+          }
         }
       }
 
