@@ -136,8 +136,7 @@ function registerGroupMessages(conn) {
         }
       }
       else if (update.action === "promote" || update.action === "demote") {
-        // Debug log for troubleshooting
-        console.log('[DEBUG] group-participants.update event:', JSON.stringify(update, null, 2));
+
         for (const participant of update.participants) {
           // Baileys uses update.author as the actor (who performed the action), participant as the target
           const actor = update.author || update.actor || participant;

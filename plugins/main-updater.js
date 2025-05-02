@@ -3,6 +3,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require("path");
 const AdmZip = require("adm-zip");
+const { execSync } = require('child_process');
 const { setCommitHash, getCommitHash } = require('../data/updateDB');
 
 cmd({
@@ -12,87 +13,68 @@ cmd({
     category: "misc",
     filename: __filename
 }, async (client, message, args, { reply, isCreator }) => {
+    if (!isCreator) return reply("⚠️ *Creator only command*");
+    
     await client.sendMessage(message.key.remoteJid, {
-        react: {
-            text: "🆕",
-            key: message.key
-        }
+        react: { text: "🔄", key: message.key }
     });
-    if (!isCreator) return reply("This command is only for the bot creator.");
 
     try {
-        await reply("🔍 Checking for PATRON-MD updates...");
+        // Stylish message with emoji and font
+        const stylish = (text, emoji) => `*${emoji} 卄 ${text} 卄 ${emoji}*`;
+        
+        await reply(stylish("Checking PATRON-MD", "🔍"));
 
-        // Fetch the latest commit hash from GitHub
-        const { data: commitData } = await axios.get("https://api.github.com/repos/Itzpatron/PATRON-MD2/commits/main");
-        const latestCommitHash = commitData.sha;
-
-        // Get the stored commit hash from the database
-        const currentHash = await getCommitHash();
-
-        if (latestCommitHash === currentHash) {
-            return reply("✅ Your PATRON-MD bot is already up-to-date!");
+        // Get latest commit
+        const { data: commitData } = await axios.get(
+            "https://api.github.com/repos/Itzpatron/PATRON-MD2/commits/main"
+        );
+        
+        if (await getCommitHash() === commitData.sha) {
+            return reply(stylish("Already latest version", "✅"));
         }
 
-        await reply("🚀 Updating PATRON-MD Bot...");
+        await reply(stylish("Updating PATRON-MD", "⚡"));
 
-        // Download the latest code
-        const zipPath = path.join(__dirname, "latest.zip");
-        const { data: zipData } = await axios.get("https://github.com/Itzpatron/PATRON-MD2/archive/main.zip", { responseType: "arraybuffer" });
-        fs.writeFileSync(zipPath, zipData);
-
-        // Extract ZIP file
-        await reply("📦 Extracting the latest code...");
-        const extractPath = path.join(__dirname, 'latest');
-        const zip = new AdmZip(zipPath);
-        zip.extractAllTo(extractPath, true);
-
-        // Copy updated files, preserving config.js and app.json
-        await reply("🔄 Replacing files...");
-        const sourcePath = path.join(extractPath, "PATRON-MD2-main");
-        const destinationPath = path.join(__dirname, '..');
-        copyFolderSync(sourcePath, destinationPath);
-
-        // Save the latest commit hash to the database
-        await setCommitHash(latestCommitHash);
-
+        // Download and extract
+        const zipPath = path.join(__dirname, "update_temp.zip");
+        fs.writeFileSync(
+            zipPath,
+            (await axios.get("https://github.com/Itzpatron/PATRON-MD2/archive/main.zip", {
+                responseType: "arraybuffer"
+            })).data
+        );
+        
+        new AdmZip(zipPath).extractAllTo(path.join(__dirname, 'temp_update'), true);
+        
+        // Apply update
+        copyFolderSync(
+            path.join(__dirname, 'temp_update/PATRON-MD2-main'),
+            path.join(__dirname, '..')
+        );
+        
         // Cleanup
+        await setCommitHash(commitData.sha);
         fs.unlinkSync(zipPath);
-        fs.rmSync(extractPath, { recursive: true, force: true });
+        fs.rmSync(path.join(__dirname, 'temp_update'), { recursive: true });
 
-        await reply("✅ Update complete! Restarting the bot...");
-        process.exit(0);
+        await reply(stylish("Updated! Restarting...", "🔄"));
+        execSync('pm2 restart all', { stdio: 'inherit' });
+
     } catch (error) {
         console.error("Update error:", error);
-        return reply("❌ Update failed. Please try manually.");
+        reply(stylish("Update failed", "❌"));
     }
 });
 
-// Helper function to copy directories while preserving config.js and app.json
 function copyFolderSync(source, target) {
-    if (!fs.existsSync(source)) {
-        console.error('Update error: Source directory does not exist:', source);
-        return; // Prevent crashing if source folder is missing
-    }
-    if (!fs.existsSync(target)) {
-        fs.mkdirSync(target, { recursive: true });
-    }
-
-    const items = fs.readdirSync(source);
-    for (const item of items) {
-        const srcPath = path.join(source, item);
-        const destPath = path.join(target, item);
-
-        // Skip config.js and app.json
-        if (item === "config.js" || item === "app.json") {
-            console.log(`Skipping ${item} to preserve custom settings.`);
-            continue;
-        }
-
-        if (fs.lstatSync(srcPath).isDirectory()) {
-            copyFolderSync(srcPath, destPath);
-        } else {
-            fs.copyFileSync(srcPath, destPath);
-        }
-    }
+    if (!fs.existsSync(source)) return;
+    fs.existsSync(target) || fs.mkdirSync(target, { recursive: true });
+    
+    fs.readdirSync(source).forEach(item => {
+        if (['config.js', 'app.json'].includes(item)) return;
+        const src = path.join(source, item);
+        const dest = path.join(target, item);
+        fs.lstatSync(src).isDirectory() ? copyFolderSync(src, dest) : fs.copyFileSync(src, dest);
+    });
 }

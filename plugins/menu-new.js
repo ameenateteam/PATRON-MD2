@@ -474,6 +474,8 @@ cmd({
 ┃★│ • status-reply [on/off]
 ┃★│ • sticker-name [name]
 ┃★│ • custom-react [on/off]
+┃★│ • status-msg [message]
+┃★│ • antidel-path [path]
 ┃★│ • setcustomemojis [emojis]
 ┃★│ • owner-number [number]
 ┃★│ • owner-name [name]

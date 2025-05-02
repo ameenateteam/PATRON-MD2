@@ -467,6 +467,48 @@ async (conn, mek, m, { from, args, isCreator, reply }) => {
 });
 
 //--------------------------------------------
+//  STATUS-MSG COMMAND
+//--------------------------------------------
+cmd({
+    pattern: "status-msg",
+    alias: ["statusmessage", "setstatusmsg", "autostatusmsg"],
+    desc: "Set the auto-reply message for status replies.",
+    category: "settings",
+    filename: __filename,
+    use: ".status-msg [message]"
+}, async (conn, mek, m, { from, args, isCreator, reply }) => {
+    if (!isCreator) return reply("*📛 Only the owner can use this command!*");
+
+    const newMsg = args.join(" ");
+    if (!newMsg) return reply("❌ Please provide a new auto-reply message.\n\n📌 Example: `.status-msg Seen by Patron-MD 🤍`");
+
+    config.AUTO_STATUS_MSG = newMsg;
+    saveConfig('AUTO_STATUS_MSG', newMsg);
+    return reply(`✅ Status auto-reply message successfully updated to:\n*${newMsg}*`);
+});
+
+//--------------------------------------------
+//  ANTI-DEL-PATH COMMAND
+//--------------------------------------------
+cmd({
+    pattern: "antidel-path",
+    alias: ["setantidelpath", "antidelpath", "delpath"],
+    desc: "Set the path for anti-delete logs.",
+    category: "settings",
+    filename: __filename,
+    use: ".antidel-path [path]"
+}, async (conn, mek, m, { from, args, isCreator, reply }) => {
+    if (!isCreator) return reply("*📛 Only the owner can use this command!*");
+
+    const newPath = args.join(" ");
+    if (!newPath) return reply("❌ Please provide a new path for anti-delete logs.\n\n📌 Example: `.antidel-path log` or `.antidel-path same`");
+
+    config.ANTI_DEL_PATH = newPath;
+    saveConfig('ANTI_DEL_PATH', newPath);
+    return reply(`✅ Anti-delete log path successfully updated to:\n*${newPath}*`);
+});
+
+//--------------------------------------------
 //  STICKER-NAME COMMAND
 //--------------------------------------------
 cmd({

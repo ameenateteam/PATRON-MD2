@@ -48,9 +48,11 @@ async (conn, mek, m, { from, quoted, reply }) => {
 ┇๏ *Custom React:* ${isEnabled(config.CUSTOM_REACT) ? "Enabled ✅" : "Disabled ❌"}
 ╭━━〔 *Custom Settings* 〕━━┈⊷
 ┇๏ *Sticker Name:* ${config.STICKER_NAME || "Not Set ❌"}
+┇๏ *Status Auto-Reply Msg:* ${config.AUTO_STATUS_MSG || "Not Set ❌"}
 ┇๏ *Custom React Emojis:* ${config.CUSTOM_REACT_EMOJIS || "Not Set ❌"}
 ┇๏ *Owner Number:* ${config.OWNER_NUMBER || "Not Set ❌"}
 ┇๏ *Owner Name:* ${config.OWNER_NAME || "Not Set ❌"}
+┇๏ *Antidel Path:* ${config.ANTI_DEL_PATH || "Not Set ❌"}
 ╰━━━━━━━━━━━━──┈⊷
 > *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴀᴛʀᴏɴ TᴇᴄʜX 🚹* `;
 

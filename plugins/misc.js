@@ -22,7 +22,7 @@ async (conn, mek, m, { from, reply, q, text, isCreator, fromMe }) => {
             case 'on':
                 await setAnti('gc', false);
                 await setAnti('dm', false);
-                return reply('_AntiDelete is now off for Group Chats and Direct Messages._');
+                return reply('_AntiDelete is now off for Group Chats and Direct Messages._\nUse .antidelete set all to enable it');
 
             case 'off gc':
                 await setAnti('gc', false);
