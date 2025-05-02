@@ -21,6 +21,7 @@ const {
     Browsers
   } = require('baileys-pro')
   
+  const { saveMessage, getMessage } = require('./messageStore');
   
   const l = console.log
   const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, runtime, sleep, fetchJson } = require('./lib/functions')
@@ -122,7 +123,8 @@ async function connectToWA() {
           browser: Browsers.macOS("Firefox"),
           syncFullHistory: true,
           auth: state,
-          version
+          version,
+          getMessage: async (key) => getMessage(key) || undefined
           })
       
   conn.ev.on('connection.update', (update) => {
