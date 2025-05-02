@@ -34,7 +34,7 @@ async (conn, mek, m, { from, reply }) => {
 │ 👑 *Owner*: ${repoData.owner.login}
 │ ⭐ *Stars*: ${repoData.stargazers_count}
 │ ⑂ *Forks*: ${repoData.forks_count}
-│ 🔗 *URL*: ${repoData.html_url}
+│ 🔗 *URL*: ${repoData.html_url}/fork
 │
 │ 📝 *Description*:
 │ ${repoData.description || 'No description'}
@@ -51,6 +51,7 @@ async (conn, mek, m, { from, reply }) => {
   ├─ 👤 ${repoData.owner.login}
   ├─ ✨ ${repoData.stargazers_count} Stars
   ├─ ⑂ ${repoData.forks_count} Forks
+  ├─ 🔗 ${repoData.html_url}/fork
   │
   •——[ *PATRON-MD* ]——•
 > *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴀᴛʀᴏɴ TᴇᴄʜX 🚹* `;
@@ -66,7 +67,7 @@ async (conn, mek, m, { from, reply }) => {
   ♢ *Forks*: ${repoData.forks_count} ⑂
   ♢ *Updated*: ${new Date(repoData.updated_at).toLocaleDateString()}
   
-  🔗 ${repoData.html_url}
+  🔗 ${repoData.html_url}/fork
   
 >  > *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴀᴛʀᴏɴ TᴇᴄʜX 🚹* `;
 
@@ -80,7 +81,7 @@ async (conn, mek, m, { from, reply }) => {
 │ • Owner: ${repoData.owner.login}
 │ • Stars: ${repoData.stargazers_count}
 │ • Forks: ${repoData.forks_count}
-│ • URL: ${repoData.html_url}
+│ • URL: ${repoData.html_url}/fork
 │ • Desc: ${repoData.description || 'None'}
 └──────────────────────┘
 > *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴀᴛʀᴏɴ TᴇᴄʜX 🚹* `;
@@ -94,7 +95,7 @@ async (conn, mek, m, { from, reply }) => {
   👨‍💻  ${repoData.owner.login}
   
   ⭐ ${repoData.stargazers_count}  ⑂ ${repoData.forks_count}
-  🔗 ${repoData.html_url}
+  🔗 ${repoData.html_url}/fork
   
   📜 ${repoData.description || 'No description'}
   
@@ -110,7 +111,7 @@ async (conn, mek, m, { from, reply }) => {
 ║ > OWNER: ${repoData.owner.login}
 ║ > STARS: ${repoData.stargazers_count}
 ║ > FORKS: ${repoData.forks_count}
-║ > URL: ${repoData.html_url}
+║ > URL: ${repoData.html_url}/fork
 ║ > DESC: ${repoData.description || 'None'}
 ╚══════════════════════╝
 > *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴘᴀᴛʀᴏɴ TᴇᴄʜX 🚹* `;
@@ -127,8 +128,8 @@ async (conn, mek, m, { from, reply }) => {
 │
 │ ✨ ${repoData.stargazers_count} Stars
 │ ⑂ ${repoData.forks_count} Forks
-│
-│ 🔗 ${repoData.html_url}
+│   
+│ 🔗 ${repoData.html_url}/fork
 │
 ┌───────────────┐
 │  📝  *DESC*  │
@@ -149,7 +150,7 @@ ${repoData.description || 'No description'}
 ⭐ ${repoData.stargazers_count} Stars | ⑂ ${repoData.forks_count} Forks
 🔄 Last updated: ${new Date(repoData.updated_at).toLocaleDateString()}
 
-🔗 GitHub: ${repoData.html_url}
+🔗 GitHub: ${repoData.html_url}/fork
 
 ${repoData.description || 'No description available'}
 
@@ -170,7 +171,7 @@ ${repoData.description || 'No description available'}
  ✧ *Forks*: ${repoData.forks_count}
 •・゜゜・* ✧  *・゜゜・•
 
-🔗 ${repoData.html_url}
+🔗 ${repoData.html_url}/fork
 
 ${repoData.description || 'No description'}
 
@@ -188,7 +189,7 @@ ${repoData.description || 'No description'}
 ◈ Maintainer: ${repoData.owner.login}
 ◈ Popularity: ★ ${repoData.stargazers_count} | ⑂ ${repoData.forks_count}
 ◈ Last Update: ${new Date(repoData.updated_at).toLocaleDateString()}
-◈ URL: ${repoData.html_url}
+◈ URL: ${repoData.html_url}/fork
 
 Description:
 ${repoData.description || 'No description provided'}
