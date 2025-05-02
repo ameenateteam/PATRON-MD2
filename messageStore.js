@@ -33,12 +33,31 @@ function saveMessage(key, message) {
 function getMessage(key) {
     const db = loadDB();
     const normKey = normalizeKey(key);
-    const result = db[JSON.stringify(normKey)];
+    const stringKey = JSON.stringify(normKey);
+    let result = db[stringKey];
+
     if (!result) {
-        // Compare all keys for debugging
-        const allKeys = Object.keys(db).map(k => JSON.parse(k));
-        console.log('Message not found for normalized key:', normKey);
-        console.log('Available keys:', allKeys);
+        // Fuzzy search: ignore participant if not found
+        const allKeys = Object.keys(db);
+        const fallbackKey = allKeys.find(k => {
+            try {
+                const parsed = JSON.parse(k);
+                return parsed.remoteJid === normKey.remoteJid &&
+                       parsed.id === normKey.id &&
+                       parsed.fromMe === normKey.fromMe;
+            } catch {
+                return false;
+            }
+        });
+        if (fallbackKey) {
+            result = db[fallbackKey];
+            console.log('Fuzzy match found for key:', normKey, 'using stored key:', fallbackKey);
+        } else {
+            // Compare all keys for debugging
+            const allParsedKeys = allKeys.map(k => JSON.parse(k));
+            console.log('Message not found for normalized key:', normKey);
+            console.log('Available keys:', allParsedKeys);
+        }
     }
     return result;
 }
