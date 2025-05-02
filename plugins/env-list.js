@@ -29,6 +29,7 @@ async (conn, mek, m, { from, quoted, reply }) => {
 ┃▸╭───────────
 ┃▸┃๏ *ENV SETTINGS 🗿*
 ┃▸└───────────···๏
+┃▸┃๏ *Check settingmenu for how to change them*
 ╰────────────────┈⊷
 ╭━━〔 *Enabled Disabled* 〕━━┈⊷
 ┇๏ *Status View:* ${isEnabled(config.AUTO_STATUS_SEEN) ? "Enabled ✅" : "Disabled ❌"}
