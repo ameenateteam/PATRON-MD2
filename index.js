@@ -186,6 +186,23 @@ conn.ev.on('messages.update', async updates => {
   //============================== 
   conn.ev.on("messages.upsert", async ({ messages }) => {
     try {
+      const m = messages[0];
+      if (!m?.message) return;
+      // Save every incoming message for message store
+      saveMessage(m.key, m);
+      console.log('Saved message:', {
+        key: m.key,
+        messageType: Object.keys(m.message)[0],
+        from: m.key.remoteJid
+      });
+    } catch (err) {
+      console.error('Error in message listener:', err);
+    }
+  });
+
+  //============================== 
+  conn.ev.on("messages.upsert", async ({ messages }) => {
+    try {
         const m = messages[0];
         if (!m?.message || m.key.fromMe) return;
 
@@ -332,10 +349,13 @@ conn.ev.on('messages.upsert', async (mek) => {
   const isMe = botNumber.includes(senderNumber)
   const isOwner = ownerNumber.includes(senderNumber) || isMe
   const botNumber2 = await jidNormalizedUser(conn.user.id);
-  const groupMetadata = isGroup ? await conn.groupMetadata(from).catch(e => {}) : ''
-  const groupName = isGroup ? groupMetadata.subject : ''
-  const participants = isGroup ? await groupMetadata.participants : ''
-  const groupAdmins = isGroup ? await getGroupAdmins(participants) : ''
+  const groupMetadata = isGroup ? await conn.groupMetadata(from).catch(e => {
+    console.error('Failed to fetch groupMetadata:', e);
+    return undefined;
+  }) : ''
+  const groupName = isGroup && groupMetadata && groupMetadata.subject ? groupMetadata.subject : ''
+  const participants = isGroup && groupMetadata && groupMetadata.participants ? groupMetadata.participants : ''
+  const groupAdmins = isGroup && participants ? await getGroupAdmins(participants) : ''
   const isBotAdmins = isGroup ? groupAdmins.includes(botNumber2) : false
   const isAdmins = isGroup ? groupAdmins.includes(sender) : false
   const isReact = m.message.reactionMessage ? true : false

@@ -19,7 +19,11 @@ function saveMessage(key, message) {
 
 function getMessage(key) {
     const db = loadDB();
-    return db[JSON.stringify(key)];
+    const result = db[JSON.stringify(key)];
+    if (!result) {
+        console.log('Message not found for key:', key);
+    }
+    return result;
 }
 
 module.exports = { saveMessage, getMessage };
