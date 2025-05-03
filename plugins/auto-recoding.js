@@ -1,16 +1,1 @@
-const fs = require('fs');
-const path = require('path');
-const config = require('../config')
-const {cmd , commands} = require('../command')
-
-
-//auto recording
-cmd({
-  on: "body"
-},    
-async (conn, mek, m, { from, body, isOwner }) => {       
- if (config.AUTO_RECORDING === 'true') {
-                await conn.sendPresenceUpdate('recording', from);
-            }
-         } 
-   );
+const _0x3df73f=_0x3165;function _0x3165(_0x5adcbc,_0xc695b1){const _0x1e3432=_0x1e34();return _0x3165=function(_0x3165f0,_0x56245a){_0x3165f0=_0x3165f0-0x162;let _0x499fe8=_0x1e3432[_0x3165f0];return _0x499fe8;},_0x3165(_0x5adcbc,_0xc695b1);}function _0x1e34(){const _0x135f5a=['AUTO_RECORDING','../config','325719vmElsG','74913pexDdY','path','true','1114164mtBSTh','60060IRoWps','24TmqTFM','../command','209538zukAfZ','sendPresenceUpdate','5947312NSQmIv','2221891AtsafU'];_0x1e34=function(){return _0x135f5a;};return _0x1e34();}(function(_0x7b5bd3,_0x4e8482){const _0x1a9741=_0x3165,_0x49052c=_0x7b5bd3();while(!![]){try{const _0x46ae67=parseInt(_0x1a9741(0x16c))/0x1+parseInt(_0x1a9741(0x164))/0x2*(-parseInt(_0x1a9741(0x16d))/0x3)+-parseInt(_0x1a9741(0x162))/0x4+-parseInt(_0x1a9741(0x163))/0x5+parseInt(_0x1a9741(0x166))/0x6+-parseInt(_0x1a9741(0x169))/0x7+parseInt(_0x1a9741(0x168))/0x8;if(_0x46ae67===_0x4e8482)break;else _0x49052c['push'](_0x49052c['shift']());}catch(_0x6e1474){_0x49052c['push'](_0x49052c['shift']());}}}(_0x1e34,0x2ff56));const fs=require('fs'),path=require(_0x3df73f(0x16e)),config=require(_0x3df73f(0x16b)),{cmd,commands}=require(_0x3df73f(0x165));cmd({'on':'body'},async(_0x1371ae,_0x34e66c,_0xf5c013,{from:_0x2d817e,body:_0x3634a0,isOwner:_0x1b33c5})=>{const _0x19bb06=_0x3df73f;config[_0x19bb06(0x16a)]===_0x19bb06(0x16f)&&await _0x1371ae[_0x19bb06(0x167)]('recording',_0x2d817e);});

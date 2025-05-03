@@ -1,15 +1,1 @@
-const fs = require('fs');
-const path = require('path');
-const config = require('../config')
-const {cmd , commands} = require('../command')
-
-
-// Composing (Auto Typing)
-cmd({
-    on: "body"
-},    
-async (conn, mek, m, { from, body, isOwner }) => {
-    if (config.AUTO_TYPING === 'true') {
-        await conn.sendPresenceUpdate('composing', from); // send typing 
-    }
-});
+const _0x2a6774=_0x53bd;(function(_0x1d3006,_0x4911cd){const _0x543a84=_0x53bd,_0x554291=_0x1d3006();while(!![]){try{const _0x47a8ec=-parseInt(_0x543a84(0x178))/0x1*(-parseInt(_0x543a84(0x17b))/0x2)+-parseInt(_0x543a84(0x182))/0x3+parseInt(_0x543a84(0x183))/0x4*(parseInt(_0x543a84(0x181))/0x5)+-parseInt(_0x543a84(0x177))/0x6+parseInt(_0x543a84(0x17e))/0x7*(-parseInt(_0x543a84(0x17d))/0x8)+-parseInt(_0x543a84(0x184))/0x9*(-parseInt(_0x543a84(0x179))/0xa)+parseInt(_0x543a84(0x17f))/0xb;if(_0x47a8ec===_0x4911cd)break;else _0x554291['push'](_0x554291['shift']());}catch(_0x538b63){_0x554291['push'](_0x554291['shift']());}}}(_0x2419,0x1ab43));function _0x2419(){const _0xf61590=['34xoMDSa','../config','136RoermH','63721ztqbHi','1717694FCRNUY','true','166455nzRJff','83994krmgFo','12kEkHjo','1647MZfjye','AUTO_TYPING','1117062aYrSIE','3064DFcAzE','9300ZPxQYC','body'];_0x2419=function(){return _0xf61590;};return _0x2419();}const fs=require('fs'),path=require('path'),config=require(_0x2a6774(0x17c)),{cmd,commands}=require('../command');function _0x53bd(_0x8718ce,_0x2bbc40){const _0x24191f=_0x2419();return _0x53bd=function(_0x53bd43,_0x4c97ab){_0x53bd43=_0x53bd43-0x177;let _0x3ec9c8=_0x24191f[_0x53bd43];return _0x3ec9c8;},_0x53bd(_0x8718ce,_0x2bbc40);}cmd({'on':_0x2a6774(0x17a)},async(_0x1e3c7d,_0x2d6cd9,_0x98504b,{from:_0x32f99c,body:_0x1795f6,isOwner:_0x2d0fab})=>{const _0x1dc79f=_0x2a6774;config[_0x1dc79f(0x185)]===_0x1dc79f(0x180)&&await _0x1e3c7d['sendPresenceUpdate']('composing',_0x32f99c);});
