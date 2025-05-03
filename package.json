@@ -11,7 +11,7 @@
     "postinstall": "npm rebuild sqlite3"
   },
   "dependencies": {
-    "baileys-pro": "^0.0.4",
+    "@whiskeysockets/baileys": "npm:@fizzxydev/baileys-pro@8.5.12",
     "@adiwajshing/keyed-db": "^0.2.4",
     "@dark-yasiya/yt-dl.js": "1.0.5",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
