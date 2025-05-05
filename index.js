@@ -1,3 +1,38 @@
+// --- Automatic sqlite3 fix (added by Cascade) ---
+const fs = require('fs');
+const { execSync } = require('child_process');
+const path = require('path');
+
+function checkSqlite3Binding() {
+    const nodeAbi = process.versions.modules;
+    const bindingPaths = [
+        path.join(__dirname, 'node_modules', 'sqlite3', 'build', 'Release', 'node_sqlite3.node'),
+        path.join(__dirname, 'node_modules', 'sqlite3', 'lib', 'binding', `node-v${nodeAbi}-` + process.platform + '-' + process.arch, 'node_sqlite3.node')
+    ];
+    return bindingPaths.some(fs.existsSync);
+}
+
+function fixSqlite3() {
+    try {
+        console.log('[startup] Attempting to rebuild sqlite3...');
+        execSync('npm rebuild sqlite3', { stdio: 'inherit' });
+    } catch (e) {
+        console.log('[startup] npm rebuild failed, trying build-from-source...');
+        try {
+            execSync('npm install sqlite3 --build-from-source', { stdio: 'inherit' });
+        } catch (err) {
+            console.error('[startup] Failed to build sqlite3:', err);
+            process.exit(1);
+        }
+    }
+}
+
+if (!checkSqlite3Binding()) {
+    fixSqlite3();
+} else {
+    console.log('[startup] sqlite3 native binding found.');
+}
+// --- End of automatic fix ---
 
 const {
   default: makeWASocket,
@@ -42,9 +77,6 @@ const {
   const bodyparser = require('body-parser')
   const os = require('os')
   const Crypto = require('crypto')
-  const fs = require('fs');
-  const { execSync } = require('child_process');
-  const path = require('path');
   const prefix = config.PREFIX
   const { setupLinkDetection } = require("./lib/events/antilinkDetection");
   const { registerGroupMessages } = require('./plugins/groupMessages');
