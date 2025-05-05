@@ -1,3 +1,4 @@
+
 const {
   default: makeWASocket,
     useMultiFileAuthState,
@@ -20,6 +21,10 @@ const {
     fetchLatestBaileysVersion,
     Browsers
   } = require('baileys-pro')
+
+  const fs = require('fs');
+const { execSync } = require('child_process');
+const path = require('path');
   
   const { saveMessage, getMessage } = require('./messageStore');
   
