@@ -5,11 +5,10 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "npx pm2 start index.js --deep-monitoring --attach --name PATRON-MD",
+    "start": "pm2 start index.js --deep-monitoring --attach --name PATRON-MD",
     "stop": "npx pm2 stop PATRON-MD",
-    "restart": "npx pm2 restart PATRON-MD",
-    "postinstall": "npm rebuild sqlite3"
-  },
+    "restart": "npx pm2 restart PATRON-MD"
+    },
   "dependencies": {
     "baileys-pro": "^0.0.4",
     "@adiwajshing/keyed-db": "^0.2.4",
