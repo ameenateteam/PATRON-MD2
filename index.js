@@ -162,11 +162,17 @@ async function connectToWA() {
           })
       
   conn.ev.on('connection.update', (update) => {
-  const { connection, lastDisconnect } = update
-  if (connection === 'close') {
-  if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
-  connectToWA()
-  }
+    const { connection, lastDisconnect } = update
+
+    if (connection === 'close') {
+      const statusCode = lastDisconnect?.error?.output?.statusCode
+    
+      if (statusCode !== DisconnectReason.loggedOut) {
+        console.log('📡 Disconnected. Trying to reconnect... (Reason:', statusCode, ')')
+        connectToWA()
+      } else {
+        console.log('👋 You have been logged out from WhatsApp.')
+      }    
   } else if (connection === 'open') {
   console.log('🧬 Installing Plugins')
   const path = require('path');
